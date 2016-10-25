@@ -11,6 +11,7 @@ use App\Http\Controllers\AppBaseController;
 use InfyOm\Generator\Criteria\LimitOffsetCriteria;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
+use App\User;
 
 /**
  * Class PersonaController
@@ -116,8 +117,16 @@ class PersonaAPIController extends AppBaseController
     {
         $input = $request->all();
 
-        $personas = $this->personaRepository->create($input);
-
+		$user = new User;
+        $user->name = $input->full_name;
+        $user->email = $input->email;
+        $user->password = bcrypt($input->rut);
+        $user->save();
+		
+		$input->users_id = $user->id;
+        
+		$personas = $this->personaRepository->create($input);
+		
         return $this->sendResponse($personas->toArray(), 'Persona saved successfully');
     }
 
