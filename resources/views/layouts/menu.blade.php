@@ -3,5 +3,9 @@
 </li>
 
 <li class="{{ Request::is('userActivities*') ? 'active' : '' }}">
-    <a href="{!! route('userActivities.index') !!}"><i class="fa fa-edit"></i><span>Inscribir Talleres</span></a>
+    <a href="{!! route('userActivities.index') !!}"><i class="fa fa-edit"></i><span>Talleres Inscritos</span></a>
+</li>
+
+<li class="{{ Request::is('activities*') ? 'active' : '' }}">
+    <a href="{!! route('activities.index') !!}"><i class="fa fa-edit"></i><span>Inscribir Talleres</span></a>
 </li>

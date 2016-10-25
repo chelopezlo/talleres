@@ -30,7 +30,7 @@ class ActivityController extends AppBaseController
     public function index(Request $request)
     {
         $this->activityRepository->pushCriteria(new RequestCriteria($request));
-        $activities = $this->activityRepository->all();
+        $activities = $this->activityRepository->with('ActivitySchedule')->orderBy('color')->findByField('activity_type_id', 2);
 
         return view('activities.index')
             ->with('activities', $activities);
@@ -100,7 +100,9 @@ class ActivityController extends AppBaseController
 
             return redirect(route('activities.index'));
         }
-
+        
+        $activity->load('ActivitySchedule');
+        
         return view('activities.edit')->with('activity', $activity);
     }
 

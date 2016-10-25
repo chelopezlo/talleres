@@ -161,19 +161,7 @@ class Persona extends Model
     public static $rules = [
         'rut' => 'required',
         'full_name' => 'required',
-        'email' => 'email',
-        'users_id' => 'nullable',
-        'iglesias_id' => 'nullable',
-        'code' => 'nullable',
-        'gender' => 'nullable',
-        'birthday' => 'nullable',
-        'occupation' => 'nullable',
-        'address' => 'nullable',
-        'phone' => 'nullable',
-        'description' => 'nullable',
-        'facebook' => 'nullable',
-        'twitter' => 'nullable',
-        'is_leader' => 'nullable',
+        'email' => 'email'
     ];
 
     public function Activity() {

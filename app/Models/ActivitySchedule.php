@@ -48,7 +48,8 @@ class ActivitySchedule extends Model
     public $fillable = [
         'from',
         'to',
-        'activity_id'
+        'activity_id',
+        'signed_up'
     ];
 
     /**
@@ -59,7 +60,8 @@ class ActivitySchedule extends Model
     protected $casts = [
         'from' => 'datetime',
         'to' => 'datetime',
-        'activity_id' => 'integer'
+        'activity_id' => 'integer',
+        'signed_up' => 'integer'
     ];
 
     /**
@@ -71,5 +73,11 @@ class ActivitySchedule extends Model
         
     ];
 
+    public function UserActivity() {
+        return $this->hasMany('App\Models\UserActivity');
+    }
     
+        public function Activity() {
+        return $this->belongsTo('App\Models\Activity');
+    }
 }

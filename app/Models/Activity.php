@@ -76,7 +76,8 @@ class Activity extends Model
         'color',
         'icon',
         'is_selectable',
-        'activity_type_id'
+        'activity_type_id',
+        'quota'
     ];
 
     /**
@@ -90,7 +91,8 @@ class Activity extends Model
         'color' => 'string',
         'icon' => 'string',
         'is_selectable' => 'integer',
-        'activity_type_id' => 'integer'
+        'activity_type_id' => 'integer',
+        'quota' => 'integer'
     ];
 
     /**
@@ -108,5 +110,9 @@ class Activity extends Model
     
     public function ActivityType() {
         return $this->belongsTo('App\Models\ActivityType');
+    }
+    
+    public function ActivitySchedule() {
+        return $this->hasMany('App\Models\ActivitySchedule');
     }
 }

@@ -1,3 +1,31 @@
+    <div class="row">
+        <div class="col-md-4">
+          <!-- Widget: user widget style 1 -->
+          <div class="box box-widget widget-user-2">
+            <!-- Add the bg color to the header using any of the bg-* classes -->
+            <div class="widget-user-header bg-yellow">
+              <div class="widget-user-image">
+                <i class="fa fa-flag-o"></i>
+              </div>
+              <!-- /.widget-user-image -->
+              <h3 class="widget-user-username">{{$activity->name}}</h3>
+              <h5 class="widget-user-desc">{{$activity->description}}</h5>
+            </div>
+            <div class="box-footer no-padding">
+                <?php $total = 0; ?>
+              <ul class="nav nav-stacked">
+                @foreach ( $activity->ActivitySchedule as $schedule )
+                    <li><a href="#">{{ $schedule->from }} <span class="pull-right badge bg-blue">{{ $schedule->signed_up }}</span></a></li>
+                    <?php $total += $schedule->signed_up?>
+                @endforeach                
+                <li><a href="#">Total inscritos <span class="pull-right badge bg-red">{{$total}}</span></a></li>
+              </ul>
+            </div>
+          </div>
+          <!-- /.widget-user -->
+        </div>
+      </div>
+
 <!-- Name Field -->
 <div class="form-group col-sm-6">
     {!! Form::label('name', 'Name:') !!}
@@ -31,6 +59,11 @@
     <label class="radio-inline">
         {!! Form::radio('is_selectable', "0", null) !!} 0
     </label>
+</div>
+
+<!-- Is Selectable Field -->
+<div class="form-group col-sm-12">
+    {!! Form::select('schedule', $activity->ActivitySchedule) !!}   
 </div>
 
 <!-- Submit Field -->

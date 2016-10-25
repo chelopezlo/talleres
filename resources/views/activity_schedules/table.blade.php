@@ -2,7 +2,7 @@
     <thead>
         <th>From</th>
         <th>To</th>
-        <th>Activity Id</th>
+        <th>Activity</th>
         <th>Created At</th>
         <th>Updated At</th>
         <th colspan="3">Action</th>
@@ -12,7 +12,7 @@
         <tr>
             <td>{!! $activitySchedule->from !!}</td>
             <td>{!! $activitySchedule->to !!}</td>
-            <td>{!! $activitySchedule->activity_id !!}</td>
+            <td>{!! $activitySchedule->activity->name !!}</td>
             <td>{!! $activitySchedule->created_at !!}</td>
             <td>{!! $activitySchedule->updated_at !!}</td>
             <td>
