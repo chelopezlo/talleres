@@ -117,15 +117,15 @@ class PersonaAPIController extends AppBaseController
     {
         $input = $request->all();
 
-		$user = new User;
-        $user->name = $input->full_name;
-        $user->email = $input->email;
-        $user->password = bcrypt($input->rut);
+	$user = new User;
+        $user->name = $input['full_name'];
+        $user->email = $input['email'];
+        $user->password = bcrypt($input['rut']);
         $user->save();
 		
-		$input->users_id = $user->id;
-        
-		$personas = $this->personaRepository->create($input);
+        $input['users_id'] = $user->id;
+
+        $personas = $this->personaRepository->create($input);
 		
         return $this->sendResponse($personas->toArray(), 'Persona saved successfully');
     }

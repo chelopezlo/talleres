@@ -28,7 +28,8 @@
                         data-target="#inscripcionTallerModal" 
                         data-schedule='{{$schedule->id}}' 
                         data-activity='{{$activity->id}}' 
-                        data-ppl='{{Auth::user()->Persona->id}}'>
+                        data-ppl='{{Auth::user()->Persona->id}}'
+                        data-role='schedule'>
                             {{ $schedule->from }} 
                             <span class="pull-right badge bg-blue">{{ $schedule->signed_up }}</span>
                     </a>

@@ -30,7 +30,10 @@ class UserActivityController extends AppBaseController
     public function index(Request $request)
     {
         $this->userActivityRepository->pushCriteria(new RequestCriteria($request));
-        $userActivities = $this->userActivityRepository->all();
+        
+        $user = $request->user();
+        
+        $userActivities = $this->userActivityRepository->with('Schedule.Activity')->with('Persona')->findByField('persona_id', $user->Persona->id);
 
         return view('user_activities.index')
             ->with('userActivities', $userActivities);

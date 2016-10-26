@@ -107,16 +107,16 @@ class UserActivity extends Model
         
     ];
    
-    public function Activity()
-    {
-        return $this->hasOne('App\Models\Activity');
-    }
+//    public function Activity()
+//    {
+//        return $this->hasOne('App\Models\Activity');
+//    }
     
     public function Persona() {
         return $this->belongsTo('App\Models\Persona');
     }
     
     public function Schedule() {
-        return $this->hasOne('App\Models\ActivitySchedule');
+        return $this->belongsTo('App\Models\ActivitySchedule', 'activity_schedule_id');
     }
 }
