@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Flash;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
+use App\User;
 
 class PersonaController extends AppBaseController
 {
@@ -35,6 +36,31 @@ class PersonaController extends AppBaseController
 
         return view('personas.index')
             ->with('personas', $personas);
+    }
+    
+     /**
+     * Display a listing of the Persona.
+     *
+     * @param Request $request
+     * @return Response
+     */
+    public function search(Request $request)
+    {
+        $this->personaRepository->pushCriteria(new RequestCriteria($request));
+        $personas = $this->personaRepository->with('Activity')->findByField('code', $code)->first();
+
+        return view('personas.index')
+            ->with('personas', $personas);
+    }
+    
+        /**
+     * Show the form for creating a new Persona.
+     *
+     * @return Response
+     */
+    public function searchForm()
+    {
+        return view('search');
     }
 
     /**
@@ -67,7 +93,7 @@ class PersonaController extends AppBaseController
         ]);
         
         
-        $input['user_id'] = 1;//$user['id'];
+        //$input['user_id'] = 1;//$user['id'];
         $persona = $this->personaRepository->create($input);
 
         Flash::success('Persona saved successfully.');
@@ -84,15 +110,34 @@ class PersonaController extends AppBaseController
      */
     public function show($id)
     {
-        $persona = $this->personaRepository->findWithoutFail($id);
+        $personas = $this->personaRepository->all();
 
-        if (empty($persona)) {
+        if (empty($personas)) {
             Flash::error('Persona not found');
 
             return redirect(route('personas.index'));
         }
+        
+        foreach ($personas as $persona)
+        {
+            $user = User::where('rut', $persona->rut)->first();
+            if(empty($user))
+            {
+                $user = new User;
+                $user->name = $persona->full_name;
+                $user->email = $persona->email;
+                $user->rut = $persona->rut;
+                $user->password = bcrypt($persona->rut);
+                $user->save();
+                
+                $persona->users_id = $user->id;
+                $persona->save();
+            }
+        }
+        
+        
 
-        return view('personas.show')->with('persona', $persona);
+        return view('personas.show')->with('personas', $personas);
     }
 
     /**

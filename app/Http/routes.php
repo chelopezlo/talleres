@@ -33,6 +33,10 @@ Route::auth();
 
 Route::get('/home', 'HomeController@index');
 
+Route::get('/search', 'PersonaController@searchForm');
+
+Route::get('/results', 'PersonaController@search');
+
 Route::resource('activityTypes', 'ActivityTypeController');
 
 Route::resource('regions', 'RegionController');

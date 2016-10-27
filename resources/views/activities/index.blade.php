@@ -78,7 +78,7 @@ jQuery(function() {
     });
     
     $('#btnGuardar').on('click', function(){
-        var url = "http://inscripcion.esencia2016.cl/api/v1/user_activities";           
+        var url = "{!! route('api.v1.user_activities.index') !!}";           
         $.ajax({                    
             url: url,
             data: {persona_id:$("#hdnPersonaId").val(), activity_id:$("#hdnActivityId").val(), activity_schedule_id:$("#hdnActivityScheduleId").val()},

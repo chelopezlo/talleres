@@ -75,7 +75,7 @@ jQuery(function() {
     
     $('#btnGuardar').on('click', function(){
         var userActivityId = $("#hdnUserActivityId").val()
-        var url = "http://inscripcion.esencia2016.cl/api/v1/user_activities/" + userActivityId;
+        var url = "{!! route('api.v1.user_activities.index') !!}/" + userActivityId;
         $.ajax({                    
             url: url,
             method: "DELETE",
