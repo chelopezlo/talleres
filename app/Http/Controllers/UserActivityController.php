@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateUserActivityRequest;
 use App\Http\Requests\UpdateUserActivityRequest;
 use App\Repositories\UserActivityRepository;
+use App\Models\ActivitySchedule;
 use App\Http\Controllers\AppBaseController;
 use Illuminate\Http\Request;
 use Flash;
@@ -60,7 +61,7 @@ class UserActivityController extends AppBaseController
     {
         $input = $request->all();
 
-        $userActivity = $this->userActivityRepository->create($input);
+        $userActivity = $this->userActivityRepository->create($input);             
 
         Flash::success('User Activity saved successfully.');
 

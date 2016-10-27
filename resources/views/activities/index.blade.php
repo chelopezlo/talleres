@@ -4,7 +4,6 @@
     <section class="content-header">
         <h1 class="pull-left">Talleres</h1>
         <h1 class="pull-right">
-           <button class="btn btn-primary pull-right" style="margin-top: -10px;margin-bottom: 5px" href="{!! route('activities.create') !!}">Add New</button>
         </h1>
     </section>
     <div class="content">
@@ -14,8 +13,8 @@
 
         <div class="clearfix"></div>
         <div class="box box-primary">
-            <div class="box-body">
-                    @include('activities.table')
+            <div class="box-body">                
+                @include('activities.table')
             </div>
         </div>
     </div>
@@ -54,6 +53,7 @@
 
 @section('scripts')
 <script>
+var signedIn = {{ $signedIn }};
 jQuery(function() {
     $('#inscripcionTallerModal').on("show.bs.modal", function (e) {
         var activityId = $(e.relatedTarget).data('activity');
@@ -84,6 +84,12 @@ jQuery(function() {
             dataType: 'json',
             success: function (data, status, jqXHR) {
                 $("#" + $("#hdnActivityId").val() + " a[data-role='schedule']").remove();
+                $('#inscripcionTallerModal').modal("hide");
+                signedIn++;
+                if(signedIn >= 3)
+                {
+                    window.location.reload(true);
+                }
             },
             error: function (jqXHR, status) {
                 alert(jqXHR.statusText);

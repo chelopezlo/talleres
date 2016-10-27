@@ -5,20 +5,26 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateActivityRequest;
 use App\Http\Requests\UpdateActivityRequest;
 use App\Repositories\ActivityRepository;
+use App\Http\Requests\CreateUserActivityRequest;
+use App\Http\Requests\UpdateUserActivityRequest;
+use App\Repositories\UserActivityRepository;
 use App\Http\Controllers\AppBaseController;
 use Illuminate\Http\Request;
 use Flash;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
+use App\Models\UserActivity;
 
 class ActivityController extends AppBaseController
 {
     /** @var  ActivityRepository */
     private $activityRepository;
+    private $userActivityRepository;
 
-    public function __construct(ActivityRepository $activityRepo)
+    public function __construct(ActivityRepository $activityRepo, UserActivityRepository $userActivityRepo)
     {
         $this->activityRepository = $activityRepo;
+        $this->userActivityRepository = $userActivityRepo;
     }
 
     /**
@@ -30,10 +36,49 @@ class ActivityController extends AppBaseController
     public function index(Request $request)
     {
         $this->activityRepository->pushCriteria(new RequestCriteria($request));
-        $activities = $this->activityRepository->with('ActivitySchedule')->orderBy('color')->findByField('activity_type_id', 2);
-
+        
+        $user = $request->user();
+        
+        $whereUserActivity = array(
+            array(
+                'persona_id',
+                '=',
+                $user->Persona->id
+            )
+        );
+        
+        $userActivities = $this->userActivityRepository->with('Schedule.Activity')->findWhere($whereUserActivity);
+        
+        $whereActivity = array(
+            array(
+                'activity_type_id',
+                '=',
+                2
+            )
+        );
+        
+        $signedIn = 0;
+        foreach ($userActivities as $userActivity)
+        {
+            if($userActivity->Schedule->Activity->activity_type_id == 2){
+                $signedIn++;
+                $condition = array(
+                    'id',
+                    '<>',
+                    $userActivity->activity_id
+                ); 
+                array_push($whereActivity, $condition);
+            }
+        }
+        
+        if($signedIn >= 3)
+        {
+            Flash::message('Felicitaciones! Ya has inscrito los talleres. Puedes ver los talleres inscritos en la opcion "Talleres Inscritos" del menú lateral.');
+        }
+        
+        $activities = $this->activityRepository->with('ActivitySchedule')->orderBy('color')->findWhere($whereActivity);
         return view('activities.index')
-            ->with('activities', $activities);
+            ->with('activities', $activities)->with('userActivities', $userActivities)->with('signedIn', $signedIn);
     }
 
     /**

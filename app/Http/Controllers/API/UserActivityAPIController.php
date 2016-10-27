@@ -111,6 +111,11 @@ class UserActivityAPIController extends AppBaseController
         $input = $request->all();
 
         $userActivities = $this->userActivityRepository->create($input);
+        
+                
+        $userActivities->Schedule->signed_up += 1;
+        $userActivities->Schedule->save();
+
 
         return $this->sendResponse($userActivities->toArray(), 'User Activity saved successfully');
     }
@@ -270,10 +275,13 @@ class UserActivityAPIController extends AppBaseController
         /** @var UserActivity $userActivity */
         $userActivity = $this->userActivityRepository->find($id);
 
+
         if (empty($userActivity)) {
             return $this->sendError('User Activity not found');
         }
-
+        
+        $userActivity->Schedule->signed_up -= 1;
+        $userActivity->Schedule->save();
         $userActivity->delete();
 
         return $this->sendResponse($id, 'User Activity deleted successfully');

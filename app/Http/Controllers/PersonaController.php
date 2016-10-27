@@ -107,7 +107,7 @@ class PersonaController extends AppBaseController
         $persona = $this->personaRepository->findWithoutFail($id);
 
         if (empty($persona)) {
-            Flash::error('Persona not found');
+            Flash::error('Persona no encontrada');
 
             return redirect(route('personas.index'));
         }
@@ -135,9 +135,9 @@ class PersonaController extends AppBaseController
 
         $persona = $this->personaRepository->update($request->all(), $id);
 
-        Flash::success('Persona updated successfully.');
+        Flash::message('Datos guardados con éxito.');
 
-        return redirect(route('personas.index'));
+        return redirect()->action('PersonaController@edit', ['id'=> $id]);
     }
 
     /**

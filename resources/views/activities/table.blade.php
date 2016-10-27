@@ -1,5 +1,9 @@
+<?php $cont = 0;
+ //print_r($userActivities);
+if($signedIn < 3)
+{
+?>    
 <div class="row">
-<?php $cont = 0; ?>    
 @foreach($activities as $activity)
 <?php 
     if(($cont % 3) == 0)
@@ -25,7 +29,7 @@
                 <?php if($schedule->signed_up < $activity->quota){ ?>
                 <li>
                     <a  data-toggle="modal" 
-                        data-target="#inscripcionTallerModal" 
+                        href="#inscripcionTallerModal" 
                         data-schedule='{{$schedule->id}}' 
                         data-activity='{{$activity->id}}' 
                         data-ppl='{{Auth::user()->Persona->id}}'
@@ -45,3 +49,4 @@
     </div>
 @endforeach
 </div>
+<?php } ?>

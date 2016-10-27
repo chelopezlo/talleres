@@ -18,17 +18,22 @@
           <h5 class="widget-user-desc">{{$userActivity->Schedule->Activity->description}}</h5>
         </div>
         <div class="box-footer no-padding">
-            {{$userActivity->Schedule->signed_up}}
           <ul class="nav nav-stacked">
             <li>
+                <a>
+                    {{ $userActivity->Schedule->from }} 
+                    <span class="pull-right badge bg-blue">{{ $userActivity->Schedule->signed_up }}</span>
+                </a>
+            </li>
+            <li>
                 <a  data-toggle="modal" 
-                    data-target="#inscripcionTallerModal" 
-                    data-schedule='{{$userActivity->Schedule->id}}' 
+                    href="#inscripcionTallerModal" 
+                    data-id='{{$userActivity->id}}' 
+                    data-schedule='{{$userActivity->id}}' 
                     data-activity='{{$userActivity->Schedule->Activity->id}}' 
                     data-ppl='{{$userActivity->Persona->id}}'
                     data-role='schedule'>
-                        {{ $userActivity->Schedule->from }} 
-                        <span class="pull-right badge bg-blue">{{ $userActivity->Schedule->signed_up }}</span>
+                        Salir del taller
                 </a>
             </li>
           </ul>
