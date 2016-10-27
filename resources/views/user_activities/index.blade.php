@@ -37,6 +37,8 @@
                 <input type="hidden" id="hdnActivityScheduleId" />
                 <input type="hidden" id="hdnPersonaId" />
                 <input type="hidden" id="hdnActivityId" />
+                <input type="hidden" id="hdnUserActivityId" />
+
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Cancelar</button>
@@ -68,17 +70,20 @@ jQuery(function() {
         $("#hdnActivityScheduleId").val(activityScheduleId);
         $("#hdnPersonaId").val(personaId);
         $("#hdnActivityId").val(activityId);
-        
+        $("#hdnUserActivityId").val(userActivityId);
     });
     
     $('#btnGuardar').on('click', function(){
-        var url = "http://localhost:8000/api/v1/user_activities/" + userActivityId;
+        var userActivityId = $("#hdnUserActivityId").val()
+        var url = "http://inscripcion.esencia2016.cl/api/v1/user_activities/" + userActivityId;
         $.ajax({                    
             url: url,
             method: "DELETE",
             dataType: 'json',
             success: function (data, status, jqXHR) {
                 $("#" + $("#hdnActivityId").val()).remove();
+                $('#inscripcionTallerModal').modal("hide");
+                window.location.reload(true);
             },
             error: function (jqXHR, status) {
                 alert(jqXHR.statusText);

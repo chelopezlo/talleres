@@ -38,6 +38,7 @@
                 <input type="hidden" id="hdnActivityScheduleId" />
                 <input type="hidden" id="hdnPersonaId" />
                 <input type="hidden" id="hdnActivityId" />
+                <input type="hidden" id="hdnScheduleFrom" />
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Cancelar</button>
@@ -58,6 +59,7 @@ jQuery(function() {
     $('#inscripcionTallerModal').on("show.bs.modal", function (e) {
         var activityId = $(e.relatedTarget).data('activity');
         var activityScheduleId = $(e.relatedTarget).data('schedule');
+        var activityScheduleFrom = $(e.relatedTarget).data('schedule-from');
         var personaId = $(e.relatedTarget).data('ppl');
         var taller = $(".widget-user-2[id='" + activityId + "']");
         var titulo = taller.find(".widget-user-username").html();
@@ -71,11 +73,12 @@ jQuery(function() {
         $("#hdnActivityScheduleId").val(activityScheduleId);
         $("#hdnPersonaId").val(personaId);
         $("#hdnActivityId").val(activityId);
+        $("#hdnScheduleFrom").val(activityScheduleFrom);
         
     });
     
     $('#btnGuardar').on('click', function(){
-        var url = "http://localhost:8000/api/v1/user_activities";           
+        var url = "http://inscripcion.esencia2016.cl/api/v1/user_activities";           
         $.ajax({                    
             url: url,
             data: {persona_id:$("#hdnPersonaId").val(), activity_id:$("#hdnActivityId").val(), activity_schedule_id:$("#hdnActivityScheduleId").val()},
@@ -84,6 +87,7 @@ jQuery(function() {
             dataType: 'json',
             success: function (data, status, jqXHR) {
                 $("#" + $("#hdnActivityId").val() + " a[data-role='schedule']").remove();
+                $("a[data-schedule-from='" + $("#hdnScheduleFrom").val() + "']").remove();
                 $('#inscripcionTallerModal').modal("hide");
                 signedIn++;
                 if(signedIn >= 3)

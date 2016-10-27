@@ -33,7 +33,8 @@ if($signedIn < 3)
                         data-schedule='{{$schedule->id}}' 
                         data-activity='{{$activity->id}}' 
                         data-ppl='{{Auth::user()->Persona->id}}'
-                        data-role='schedule'>
+                        data-role='schedule'
+                        data-schedule-from='{{$schedule->from}}'>
                             {{ $schedule->from }} 
                             <span class="pull-right badge bg-blue">{{ $schedule->signed_up }}</span>
                     </a>

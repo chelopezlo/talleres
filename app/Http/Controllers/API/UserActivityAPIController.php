@@ -282,6 +282,7 @@ class UserActivityAPIController extends AppBaseController
         
         $userActivity->Schedule->signed_up -= 1;
         $userActivity->Schedule->save();
+        
         $userActivity->delete();
 
         return $this->sendResponse($id, 'User Activity deleted successfully');

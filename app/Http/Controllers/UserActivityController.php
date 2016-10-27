@@ -34,7 +34,7 @@ class UserActivityController extends AppBaseController
         
         $user = $request->user();
         
-        $userActivities = $this->userActivityRepository->with('Schedule.Activity')->with('Persona')->findByField('persona_id', $user->Persona->id);
+        $userActivities = $this->userActivityRepository->with('Schedule.Activity')->with('Persona')->findByField('persona_id', $user->Persona->id)->sortByDesc('from');
 
         return view('user_activities.index')
             ->with('userActivities', $userActivities);

@@ -49,6 +49,7 @@ class ActivityController extends AppBaseController
         
         $userActivities = $this->userActivityRepository->with('Schedule.Activity')->findWhere($whereUserActivity);
         
+        //Filtrado de las actividades que ya fueron inscritas       
         $whereActivity = array(
             array(
                 'activity_type_id',
@@ -57,17 +58,29 @@ class ActivityController extends AppBaseController
             )
         );
         
+        $whereSchedule = array(
+        );
+        
         $signedIn = 0;
         foreach ($userActivities as $userActivity)
         {
             if($userActivity->Schedule->Activity->activity_type_id == 2){
                 $signedIn++;
+                //Filtrar activity_id = taller
                 $condition = array(
                     'id',
                     '<>',
                     $userActivity->activity_id
                 ); 
                 array_push($whereActivity, $condition);
+                //Filtrar los horarios disponibles
+                $conditionFrom = array(
+                    'from',
+                    '<>',
+                    $userActivity->Schedule->from
+                ); 
+                array_push($whereSchedule, $conditionFrom);
+                
             }
         }
         
@@ -76,7 +89,12 @@ class ActivityController extends AppBaseController
             Flash::message('Felicitaciones! Ya has inscrito los talleres. Puedes ver los talleres inscritos en la opcion "Talleres Inscritos" del menú lateral.');
         }
         
-        $activities = $this->activityRepository->with('ActivitySchedule')->orderBy('color')->findWhere($whereActivity);
+        $activities = $this->activityRepository->with(['ActivitySchedule' 
+            => function ($query) use ($whereSchedule){
+                $query->where($whereSchedule);
+            }]
+        )->orderBy('color')->findWhere($whereActivity);
+        
         return view('activities.index')
             ->with('activities', $activities)->with('userActivities', $userActivities)->with('signedIn', $signedIn);
     }
